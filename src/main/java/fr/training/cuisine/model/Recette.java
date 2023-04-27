@@ -25,6 +25,15 @@ public class Recette {
         this.user = user;
     }
 
+    public Recette(String name, LocalDateTime createdAt, Category category, String ingredient, String steps, User user) {
+        this.name = name;
+        this.createdAt = createdAt;
+        this.category = category;
+        this.ingredient = ingredient;
+        this.steps = steps;
+        this.user = user;
+    }
+
     public int getId() {
         return id;
     }

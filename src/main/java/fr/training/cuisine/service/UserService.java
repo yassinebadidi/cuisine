@@ -17,6 +17,9 @@ public class UserService {
         }
         return false;
     }
+    public  User findByNameAndFirstname(String firstname,String lastname){
+        return userDao.findByNameFisrtname(firstname,lastname);
+    }
 
 /*    public List<UserDto> findAll() {
         return userDao.findAll().stream()

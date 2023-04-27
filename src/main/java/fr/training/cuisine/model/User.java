@@ -20,10 +20,11 @@ public class User {
         this.lastname = lastname;
     }
 
-    public User(int id, String firstname, String lastname) {
+    public User(int id, String firstname, String lastname, String password) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.password = password;
     }
 
     public int getId() {

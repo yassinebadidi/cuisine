@@ -50,7 +50,8 @@ public class UserJdbcDao implements UserDao {
             if (rs.next()) {
                 userFound = new User(
                         rs.getInt("id"),
-                        rs.getString("username"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
                         rs.getString("password")
                 );
             }

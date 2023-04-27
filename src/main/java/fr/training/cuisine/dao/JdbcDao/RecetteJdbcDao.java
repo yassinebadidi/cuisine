@@ -12,7 +12,33 @@ import java.util.List;
 
 public class RecetteJdbcDao implements RecetteDao {
     @Override
-    public Recette create(Recette entity) {
+    public Recette create(Recette recetteCreated) {
+
+        Connection connection = ConnectionManager.getInstance();
+        String query = "INSERT INTO recettes(name,created_at,category_fk_id,ingredient,steps,user_fk_id) VALUES (?,?,?,?,?,?)";
+
+        try (PreparedStatement pst = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS)) {
+
+
+            pst.setString(1, recetteCreated.getName());
+            pst.setTimestamp(2, Timestamp.valueOf(recetteCreated.getCreatedAt()));
+            pst.setInt(3, recetteCreated.getCategory().getId());
+            pst.setString(4, recetteCreated.getIngredient());
+            pst.setString(5, recetteCreated.getSteps());
+            pst.setInt(6, recetteCreated.getUser().getId());
+
+            int rowsAffected = pst.executeUpdate();
+
+            if (rowsAffected == 1) {
+                ResultSet generatedKeys = pst.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    recetteCreated.setId(generatedKeys.getInt(1));
+                    return recetteCreated;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
