@@ -4,16 +4,34 @@ import fr.training.cuisine.dao.ConnectionManager;
 import fr.training.cuisine.dao.interfaceDao.UserDao;
 import fr.training.cuisine.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class UserJdbcDao implements UserDao {
 
     @Override
-    public User create(User entity) {
+    public User create(User CreatedUser) {
+
+        Connection connection = ConnectionManager.getInstance();
+        String query = "INSERT INTO users (firstname, lastname, email, picUrl, password) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pst = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            pst.setString(1, CreatedUser.getFirstname());
+            pst.setString(2, CreatedUser.getLastname());
+            pst.setString(3, CreatedUser.getEmail());
+            pst.setString(4, CreatedUser.getPicUrl());
+            pst.setString(5, CreatedUser.getPassword());
+            int result = pst.executeUpdate();
+            if (result == 1) {
+                ResultSet generatedKeys = pst.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    Integer id = generatedKeys.getInt(1);
+                    CreatedUser.setId(id);
+                    return CreatedUser;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

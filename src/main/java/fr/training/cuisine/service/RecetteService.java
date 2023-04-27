@@ -17,6 +17,10 @@ public class RecetteService {
         return recetteDao.findAll();
     }
 
+    public Recette findById(Integer id) {
+        return recetteDao.findById(id);
+    }
+
     public Recette createRecette(String name, int idCategory, String ingredient,
                                  String steps, String userFirstname , String userLastname) throws SQLException {
         //getCategory :
